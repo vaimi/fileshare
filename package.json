@@ -13,6 +13,8 @@
     "express": "~4.14.1",
     "less-middleware": "~2.2.0",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.2"
+    "serve-favicon": "~2.3.2",
+    "formidable": "~1.1.1",
+    "fs": "~0.0.1-security"
   }
 }
