@@ -6,13 +6,30 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
+var upload = require('./routes/upload');
+var files = require('./routes/files');
 var users = require('./routes/users');
+
+var passport = require('passport')
+var BasicStrategy = require('passport-http').BasicStrategy
+
+passport.use(new BasicStrategy(
+    function(username, password, done) {
+        if (username.valueOf() === 'tester' &&
+            password.valueOf() === 'tester')
+            return done(null, true);
+        else
+            return done(null, false);
+    }
+));
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use(passport.initialize());
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -23,7 +40,9 @@ app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
+app.use('/',  passport.authenticate('basic', { session: false }), index);
+app.use('/upload',  passport.authenticate('basic', { session: false }), upload);
+app.use('/files',  passport.authenticate('basic', { session: false }), files);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
