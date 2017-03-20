@@ -9,7 +9,7 @@ var os = require("os");
 router.post('/', function(req, res, next) {
     var hostname = req.get('host')
     readDirectory(hostname, function (files) {
-        res.json({files : files});
+        res.json(files);
     })
 });
 
@@ -22,7 +22,7 @@ function readDirectory(hostname, callback) {
         }
 
         files.map(function (file) {
-            return hostname + "/uploads/" + file
+            return "http://" + hostname + "/uploads/" + file
         }).forEach(function (file) {
             filelist.push(file)
         });
